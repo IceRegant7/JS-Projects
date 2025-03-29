@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Anime</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      :root {
+    --primary-color: #f47521;
+    --bg-light: #f5f5f5;
+    --text-light: #333;
+    --bg-dark: #121212;
+    --text-dark: #fff;
+    --header-light: #fff;
+    --header-dark: #1a1a1a;
+    --menu-light: #fff;
+    --menu-dark: #1a1a1a;
+    --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    transition: var(--transition);
+}
+
+body.dark-mode {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--header-light);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: var(--transition);
+}
+
+body.dark-mode header {
+    background-color: var(--header-dark);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.menu-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.4s ease;
+}
+
+.menu-icon span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: var(--transition);
+    transform-origin: center;
+}
+
+.menu-icon.active span:nth-child(1) {
+    transform: rotate(45deg) translate(4px, 4px);
+}
+
+.menu-icon.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.menu-icon.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(4px, -4px);
+}
+
+.x-icon {
+    justify-content: center;
+}
+
+.x-icon span {
+    position: absolute;
+    width: 100%;
+}
+
+.x-icon span:nth-child(1) {
+    transform: rotate(45deg);
+}
+
+.x-icon span:nth-child(2) {
+    transform: rotate(-45deg);
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.search-container {
+    position: relative;
+    width: 200px;
+    transition: var(--transition);
+}
+
+.search-container.expanded {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    width: auto;
+    z-index: 1001;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 0.5rem 2rem 0.5rem 2.5rem;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    outline: none;
+    transition: var(--transition);
+    background-color: #f0f0f0;
+}
+
+body.dark-mode .search-container input {
+    background-color: #333;
+    color: var(--text-dark);
+    border-color: #444;
+}
+
+.search-container input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(244, 117, 33, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.close-search {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%) scale(0);
+    color: #777;
+    cursor: pointer;
+    transition: var(--transition);
+    opacity: 0;
+}
+
+.search-container.expanded .close-search {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+}
+
+.close-search:hover {
+    color: var(--primary-color);
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100vh;
+    background-color: var(--menu-light);
+    z-index: 1000;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+}
+
+body.dark-mode .side-menu {
+    background-color: var(--menu-dark);
+}
+
+.side-menu.active {
+    left: 0;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.3);
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 1rem 1rem;
+    gap: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+body.dark-mode .menu-header {
+    border-bottom: 1px solid #333;
+}
+
+.menu-link {
+    display: block;
+    padding: 1rem 1.5rem;
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition);
+    transform: translateX(-20px);
+    opacity: 0;
+}
+
+.side-menu.active .menu-link {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.side-menu.active .menu-link:nth-child(1) { transition-delay: 0.1s; }
+.side-menu.active .menu-link:nth-child(2) { transition-delay: 0.2s; }
+.side-menu.active .menu-link:nth-child(3) { transition-delay: 0.3s; }
+.side-menu.active .menu-link:nth-child(4) { transition-delay: 0.4s; }
+
+.menu-link:hover {
+    color: var(--primary-color);
+    padding-left: 2rem;
+    background-color: rgba(244, 117, 33, 0.1);
+}
+
+.dark-mode-toggle {
+    margin-top: auto;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: var(--transition) 0.5s;
+}
+
+.side-menu.active .dark-mode-toggle {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: var(--transition);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: var(--transition);
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 24px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+main {
+    padding: 6rem 2rem 2rem;
+    min-height: 100vh;
+}
+
+.main-title {
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.main-subtitle {
+    animation: fadeInUp 0.8s ease 0.2s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    body:not(.light-mode) {
+        background-color: var(--bg-dark);
+        color: var(--text-dark);
+    }
+    
+    body:not(.light-mode) header {
+        background-color: var(--header-dark);
+    }
+    
+    body:not(.light-mode) .side-menu {
+        background-color: var(--menu-dark);
+    }
+    
+    body:not(.light-mode) .search-container input {
+        background-color: #333;
+        color: var(--text-dark);
+    }
+    
+    body:not(.light-mode) #darkModeToggle {
+        checked: true;
+    }
+}
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="header-left">
+            <div class="menu-icon" id="menuIcon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo">AS ANIME</div>
+        </div>
+        
+        <div class="search-container" id="searchContainer">
+            <input type="text" placeholder="Search..." id="searchInput">
+            <i class="fas fa-search search-icon"></i>
+            <i class="fas fa-times close-search" id="closeSearch"></i>
+        </div>
+    </header>
+    
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <nav class="side-menu" id="sideMenu">
+        <div class="menu-header">
+            <div class="menu-icon x-icon" id="menuCloseIcon">
+                <span></span>
+                <span></span>
+            </div>
+            <div class="logo">AS ANIME</div>
+        </div>
+        
+        <a href="#" class="menu-link">Home</a>
+        <a href="#" class="menu-link">About</a>
+        <a href="#" class="menu-link">Services</a>
+        <a href="#" class="menu-link">Contact</a>
+        
+        <div class="dark-mode-toggle">
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="slider round"></span>
+            </label>
+            <span class="dark-mode-label">Dark Mode</span>
+        </div>
+    </nav>
+    
+    <main>
+        <h1 class="main-title">الصفحة تحت التعديل!</h1>
+        <p class="main-subtitle">المنفذ: محمد علي</p>
+    </main>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const menuIcon = document.getElementById('menuIcon');
+    const menuCloseIcon = document.getElementById('menuCloseIcon');
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const searchContainer = document.getElementById('searchContainer');
+    const searchInput = document.getElementById('searchInput');
+    const closeSearch = document.getElementById('closeSearch');
+    const header = document.getElementById('header');
+    const menuLinks = document.querySelectorAll('.menu-link');
+
+    // Check for preferred color scheme
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.checked = true;
+    }
+
+    // Toggle side menu
+    function toggleMenu() {
+        menuIcon.classList.toggle('active');
+        sideMenu.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+        
+        if (sideMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+            // Animate menu links sequentially
+            menuLinks.forEach((link, index) => {
+                link.style.transitionDelay = `${0.1 * index}s`;
+            });
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+
+    menuIcon.addEventListener('click', toggleMenu);
+    menuCloseIcon.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', toggleMenu);
+
+    // Dark mode toggle
+    darkModeToggle.addEventListener('change', function() {
+        document.body.classList.toggle('dark-mode');
+        
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
+    });
+
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.checked = true;
+    } else if (savedTheme === 'light') {
+        document.body.classList.remove('dark-mode');
+        darkModeToggle.checked = false;
+    }
+
+    // Search functionality
+    searchInput.addEventListener('focus', function() {
+        searchContainer.classList.add('expanded');
+        closeSearch.style.display = 'block';
+    });
+
+    searchInput.addEventListener('input', function() {
+        if (this.value.length > 0) {
+            closeSearch.style.opacity = '1';
+            closeSearch.style.transform = 'translateY(-50%) scale(1)';
+        } else {
+            closeSearch.style.opacity = '0';
+            closeSearch.style.transform = 'translateY(-50%) scale(0)';
+        }
+    });
+
+    closeSearch.addEventListener('click', function() {
+        searchInput.value = '';
+        searchInput.focus();
+        this.style.opacity = '0';
+        this.style.transform = 'translateY(-50%) scale(0)';
+    });
+
+    searchInput.addEventListener('blur', function() {
+        if (this.value === '') {
+            searchContainer.classList.remove('expanded');
+            closeSearch.style.display = 'none';
+        }
+    });
+
+    // Listen for color scheme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (e.matches && !localStorage.getItem('theme')) {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        } else if (!e.matches && !localStorage.getItem('theme')) {
+            document.body.classList.remove('dark-mode');
+            darkModeToggle.checked = false;
+        }
+    });
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AS Anime</title>
+    <style>
+        /* Critical CSS for instant loading */
+        body { opacity: 0; transition: opacity 0.5s; margin: 0; font-family: 'Segoe UI', sans-serif }
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f0f10;
+            display: grid;
+            place-items: center;
+            z-index: 1000;
+        }
+        .splash-logo {
+            color: #ff2e4d;
+            font-size: 3rem;
+            font-weight: 800;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        /* === CSS Variables === */
+:root {
+    /* Colors */
+    --primary: #ff2e4d;
+    --primary-dark: #e62945;
+    --bg: #0f0f10;
+    --card: #1a1a1d;
+    --text: #f8f9fa;
+    --text-secondary: #b0b0b0;
+    --light-bg: #f5f6fa;
+    --light-card: #e0e0e0;
+    --light-text: #1a1a1d;
+    
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.15);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.2);
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+[data-theme="light"] {
+    --bg: var(--light-bg);
+    --text: var(--light-text);
+    --card: var(--light-card);
+}
+
+/* === Base Styles === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+    transition: var(--transition-normal);
+}
+
+/* === Layout === */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-xl);
+    background: var(--card);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+}
+
+.logo {
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.main-nav {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.view-container {
+    flex: 1;
+    position: relative;
+}
+
+.view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition-normal);
+    padding-bottom: var(--space-xl);
+}
+
+.view.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* === Components === */
+/* Buttons */
+.nav-btn {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1rem;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--space-xs);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn.active {
+    color: var(--primary);
+    background: rgba(255, 46, 77, 0.1);
+}
+
+.cta-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: var(--space-md) var(--space-xl);
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    box-shadow: var(--shadow-lg);
+}
+
+.cta-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(255, 46, 77, 0.3);
+}
+
+/* Hero Section */
+.hero {
+    height: 60vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                url('https://i.imgur.com/JR9nXWl.jpg') center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: var(--space-lg);
+    line-height: 1.2;
+}
+
+/* Content Sections */
+.content-section {
+    padding: 0 var(--space-xl);
+    margin-bottom: var(--space-xl);
+}
+
+.content-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-lg);
+    padding-left: var(--space-sm);
+}
+
+/* Anime Grid */
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-lg);
+    padding: 0 var(--space-xl) var(--space-xl);
+}
+
+.anime-card {
+    background: var(--card);
+    border-radius: var(--space-sm);
+    overflow: hidden;
+    transition: var(--transition-normal);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.anime-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.anime-card .card-info {
+    padding: var(--space-md);
+}
+
+.anime-card h3 {
+    font-size: 1rem;
+    margin-bottom: var(--space-xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.anime-card p {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* Search */
+.search-container {
+    display: flex;
+    padding: var(--space-xl);
+    gap: var(--space-sm);
+}
+
+.search-container input {
+    flex: 1;
+    padding: var(--space-md);
+    border: none;
+    border-radius: 999px 0 0 999px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 1rem;
+}
+
+.search-container button {
+    padding: 0 var(--space-xl);
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0 999px 999px 0;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.search-container button:hover {
+    background: var(--primary-dark);
+}
+
+/* Video Player */
+.video-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-xl);
+}
+
+.video-container iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: var(--space-sm);
+    box-shadow: var(--shadow-lg);
+}
+
+.episode-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--space-md);
+    padding: 0 var(--space-xl) var(--space-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.episode-btn {
+    background: var(--card);
+    color: var(--text);
+    border: none;
+    padding: var(--space-sm);
+    border-radius: var(--space-xs);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    text-align: center;
+}
+
+.episode-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Account View */
+.account-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-xl);
+}
+
+.account-card {
+    background: var(--card);
+    border-radius: var(--space-md);
+    padding: var(--space-xl);
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    margin: 0 auto var(--space-md);
+}
+
+.login-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: 999px;
+    cursor: pointer;
+    margin-top: var(--space-md);
+    transition: var(--transition-fast);
+}
+
+.login-btn:hover {
+    background: var(--primary-dark);
+}
+
+.account-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-md);
+}
+
+.stat-card {
+    background: var(--card);
+    padding: var(--space-md);
+    border-radius: var(--space-sm);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat-card strong {
+    font-size: 2rem;
+    color: var(--primary);
+    display: block;
+    margin-top: var(--space-sm);
+}
+
+/* Settings View */
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-xl);
+}
+
+.settings-group {
+    background: var(--card);
+    padding: var(--space-md);
+    border-radius: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.settings-group h3 {
+    margin-bottom: var(--space-md);
+    color: var(--primary);
+}
+
+.setting-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.setting-option:last-child {
+    border-bottom: none;
+}
+
+/* Switch Toggle */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: var(--transition-fast);
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: var(--transition-fast);
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--primary);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Select Dropdown */
+select {
+    padding: var(--space-sm);
+    border-radius: var(--space-xs);
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Save Button */
+.save-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--space-xs);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    display: block;
+    margin: var(--space-xl) auto 0;
+    transition: var(--transition-fast);
+}
+
+.save-btn:hover {
+    background: var(--primary-dark);
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: var(--card);
+    padding: var(--space-xl);
+    border-radius: var(--space-md);
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+}
+
+.close-btn {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal h2 {
+    margin-bottom: var(--space-lg);
+    text-align: center;
+}
+
+.modal form {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.modal input {
+    padding: var(--space-md);
+    border: none;
+    border-radius: var(--space-xs);
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+}
+
+.modal button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: var(--space-md);
+    border-radius: var(--space-xs);
+    cursor: pointer;
+    margin-top: var(--space-md);
+}
+
+.modal p {
+    text-align: center;
+    margin-top: var(--space-md);
+}
+
+.modal a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .anime-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        padding: var(--space-md);
+        gap: var(--space-md);
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .content-section, 
+    .anime-grid,
+    .video-container,
+    .episode-selector {
+        padding-left: var(--space-md);
+        padding-right: var(--space-md);
+    }
+    
+    .anime-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: var(--space-md);
+    }
+    
+    .anime-card img {
+        height: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .anime-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: var(--space-sm);
+    }
+    
+    .anime-card img {
+        height: 180px;
+    }
+    
+    .modal-content {
+        padding: var(--space-lg);
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splash">
+        <div class="splash-logo">AS Anime</div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo" onclick="loadView('home')">AS Anime</div>
+            <nav class="main-nav">
+                <button class="nav-btn" data-view="home">🏠 Home</button>
+                <button class="nav-btn" data-view="browse">🔍 Browse</button>
+                <button class="nav-btn" data-view="account">👤 Account</button>
+                <button class="nav-btn" id="settings-btn">⚙️ Settings</button>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="view-container">
+            <!-- Home View -->
+            <div class="view active" id="home-view">
+                <section class="hero">
+                    <h1 data-i18n="hero_title">Unlimited Anime Streaming</h1>
+                    <button class="cta-btn" onclick="loadView('browse')" data-i18n="start_watching">Start Watching</button>
+                </section>
+                <section class="content-section">
+                    <h3 data-i18n="trending_now">🔥 Trending Now</h3>
+                    <div class="anime-grid" id="trending-content"></div>
+                </section>
+            </div>
+
+            <!-- Browse View -->
+            <div class="view" id="browse-view">
+                <div class="search-container">
+                    <input type="text" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="Search anime...">
+                    <button onclick="searchAnime()" data-i18n="search">Search</button>
+                </div>
+                <div class="anime-grid" id="browse-content"></div>
+            </div>
+
+            <!-- Watch View -->
+            <div class="view" id="watch-view">
+                <div class="video-container">
+                    <iframe id="video-player" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="episode-selector" id="episode-list"></div>
+            </div>
+
+            <!-- Account View -->
+            <div class="view" id="account-view">
+                <div class="account-container">
+                    <h2 data-i18n="your_account">Your Account</h2>
+                    <div class="account-card">
+                        <div class="avatar">👤</div>
+                        <h3 id="username">Guest</h3>
+                        <button class="login-btn" onclick="showLoginModal()" data-i18n="login_signup">Login / Sign Up</button>
+                    </div>
+                    <div class="account-stats">
+                        <div class="stat-card">
+                            <span data-i18n="watch_history">Watch History</span>
+                            <strong id="watch-count">0</strong>
+                        </div>
+                        <div class="stat-card">
+                            <span data-i18n="favorites">Favorites</span>
+                            <strong id="favorite-count">0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings View -->
+            <div class="view" id="settings-view">
+                <div class="settings-container">
+                    <h2 data-i18n="settings">Settings</h2>
+                    
+                    <div class="settings-group">
+                        <h3 data-i18n="display">Display</h3>
+                        <div class="setting-option">
+                            <span data-i18n="dark_mode">Dark Mode</span>
+                            <label class="switch">
+                                <input type="checkbox" id="dark-mode-toggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3 data-i18n="language">Language</h3>
+                        <div class="setting-option">
+                            <select id="language-selector">
+                                <option value="en">English</option>
+                                <option value="ar">العربية (Arabic)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3 data-i18n="video">Video</h3>
+                        <div class="setting-option">
+                            <span data-i18n="default_quality">Default Quality</span>
+                            <select id="quality-selector">
+                                <option value="auto" data-i18n="auto">Auto</option>
+                                <option value="1080">1080p</option>
+                                <option value="720">720p</option>
+                                <option value="480">480p</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button class="save-btn" onclick="saveSettings()" data-i18n="save_settings">Save Settings</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Login Modal -->
+        <div class="modal" id="login-modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="hideLoginModal()">&times;</span>
+                <h2 data-i18n="welcome_back">Welcome Back!</h2>
+                <form id="login-form">
+                    <input type="text" id="login-username" data-i18n-placeholder="username" placeholder="Username">
+                    <input type="password" id="login-password" data-i18n-placeholder="password" placeholder="Password">
+                    <button type="submit" data-i18n="login">Login</button>
+                </form>
+                <p data-i18n="no_account">Don't have an account? <a href="#" onclick="showSignupModal()" data-i18n="sign_up">Sign up</a></p>
+            </div>
+        </div>
+
+        <!-- Signup Modal -->
+        <div class="modal" id="signup-modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="hideSignupModal()">&times;</span>
+                <h2 data-i18n="create_account">Create Account</h2>
+                <form id="signup-form">
+                    <input type="text" id="signup-username" data-i18n-placeholder="username" placeholder="Username">
+                    <input type="email" id="signup-email" data-i18n-placeholder="email" placeholder="Email">
+                    <input type="password" id="signup-password" data-i18n-placeholder="password" placeholder="Password">
+                    <input type="password" id="signup-confirm" data-i18n-placeholder="confirm_password" placeholder="Confirm Password">
+                    <button type="submit" data-i18n="sign_up">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      // ===== APP CONFIGURATION =====
+const CONFIG = {
+    // Demo anime data
+    animeData: [
+        {
+            id: 1,
+            title: { en: "Attack on Titan", ar: "هجوم العمالقة" },
+            image: "https://i.imgur.com/JR9nXWl.jpg",
+            description: {
+                en: "Humanity fights for survival against giant humanoid creatures",
+                ar: "تحارب البشرية من أجل البقاء ضد مخلوقات شبيهة بالبشر"
+            },
+            episodes: [
+                { id: 1, title: { en: "Episode 1", ar: "الحلقة 1" }, video: "dQw4w9WgXcQ" },
+                { id: 2, title: { en: "Episode 2", ar: "الحلقة 2" }, video: "dQw4w9WgXcQ" }
+            ]
+        },
+        {
+            id: 2,
+            title: { en: "Jujutsu Kaisen", ar: "جوجوتسو كايسن" },
+            image: "https://i.imgur.com/9E8QzXq.jpg",
+            description: {
+                en: "A boy eats a cursed finger and joins a secret organization",
+                ar: "يأكل صبي إصبعًا ملعونًا وينضم إلى منظمة سرية"
+            },
+            episodes: [
+                { id: 1, title: { en: "Episode 1", ar: "الحلقة 1" }, video: "dQw4w9WgXcQ" },
+                { id: 2, title: { en: "Episode 2", ar: "الحلقة 2" }, video: "dQw4w9WgXcQ" }
+            ]
+        },
+        {
+            id: 3,
+            title: { en: "Demon Slayer", ar: "قاتل الشياطين" },
+            image: "https://i.imgur.com/7WX9P7r.jpg",
+            description: {
+                en: "A boy becomes a demon slayer to save his sister",
+                ar: "يصبح صبي قاتل شياطين لإنقاذ أخته"
+            },
+            episodes: [
+                { id: 1, title: { en: "Episode 1", ar: "الحلقة 1" }, video: "dQw4w9WgXcQ" },
+                { id: 2, title: { en: "Episode 2", ar: "الحلقة 2" }, video: "dQw4w9WgXcQ" }
+            ]
+        }
+    ],
+    
+    // Supported languages
+    languages: {
+        en: "English",
+        ar: "العربية"
+    },
+    
+    // Translations
+    translations: {
+        en: {
+            hero_title: "Unlimited Anime Streaming",
+            start_watching: "Start Watching",
+            trending_now: "🔥 Trending Now",
+            search_placeholder: "Search anime...",
+            search: "Search",
+            your_account: "Your Account",
+            login_signup: "Login / Sign Up",
+            watch_history: "Watch History",
+            favorites: "Favorites",
+            settings: "Settings",
+            display: "Display",
+            dark_mode: "Dark Mode",
+            language: "Language",
+            video: "Video",
+            default_quality: "Default Quality",
+            auto: "Auto",
+            save_settings: "Save Settings",
+            welcome_back: "Welcome Back!",
+            username: "Username",
+            password: "Password",
+            login: "Login",
+            no_account: "Don't have an account?",
+            sign_up: "Sign up",
+            create_account: "Create Account",
+            email: "Email",
+            confirm_password: "Confirm Password"
+        },
+        ar: {
+            hero_title: "بث أنمي غير محدود",
+            start_watching: "ابدأ المشاهدة",
+            trending_now: "🔥 الأكثر شهرة الآن",
+            search_placeholder: "ابحث عن أنمي...",
+            search: "بحث",
+            your_account: "حسابك",
+            login_signup: "تسجيل الدخول / إنشاء حساب",
+            watch_history: "سجل المشاهدة",
+            favorites: "المفضلة",
+            settings: "الإعدادات",
+            display: "العرض",
+            dark_mode: "الوضع المظلم",
+            language: "اللغة",
+            video: "الفيديو",
+            default_quality: "جودة افتراضية",
+            auto: "تلقائي",
+            save_settings: "حفظ الإعدادات",
+            welcome_back: "مرحبًا بعودتك!",
+            username: "اسم المستخدم",
+            password: "كلمة المرور",
+            login: "تسجيل الدخول",
+            no_account: "ليس لديك حساب؟",
+            sign_up: "اشتراك",
+            create_account: "إنشاء حساب",
+            email: "البريد الإلكتروني",
+            confirm_password: "تأكيد كلمة المرور"
+        }
+    }
+};
+
+// ===== APP STATE =====
+let STATE = {
+    currentView: "home",
+    currentAnime: null,
+    currentEpisode: null,
+    settings: {
+        darkMode: localStorage.getItem("darkMode") === "true" || false,
+        language: localStorage.getItem("language") || "en",
+        videoQuality: localStorage.getItem("videoQuality") || "auto"
+    },
+    user: {
+        loggedIn: false,
+        username: "Guest",
+        watchHistory: [],
+        favorites: []
+    }
+};
+
+// ===== DOM ELEMENTS =====
+const DOM = {
+    views: {
+        home: document.getElementById("home-view"),
+        browse: document.getElementById("browse-view"),
+        watch: document.getElementById("watch-view"),
+        account: document.getElementById("account-view"),
+        settings: document.getElementById("settings-view")
+    },
+    modals: {
+        login: document.getElementById("login-modal"),
+        signup: document.getElementById("signup-modal")
+    },
+    content: {
+        trending: document.getElementById("trending-content"),
+        browse: document.getElementById("browse-content"),
+        episodes: document.getElementById("episode-list"),
+        videoPlayer: document.getElementById("video-player")
+    },
+    account: {
+        username: document.getElementById("username"),
+        watchCount: document.getElementById("watch-count"),
+        favoriteCount: document.getElementById("favorite-count")
+    },
+    settings: {
+        darkModeToggle: document.getElementById("dark-mode-toggle"),
+        languageSelector: document.getElementById("language-selector"),
+        qualitySelector: document.getElementById("quality-selector")
+    }
+};
+
+// ===== INITIALIZATION =====
+document.addEventListener("DOMContentLoaded", () => {
+    // Hide splash screen
+    setTimeout(() => {
+        document.getElementById("splash").style.opacity = "0";
+        setTimeout(() => {
+            document.getElementById("splash").style.display = "none";
+            document.body.style.opacity = "1";
+        }, 500);
+    }, 1500);
+    
+    // Load initial state
+    loadSettings();
+    loadTranslations();
+    loadView("home");
+    loadTrending();
+    loadBrowse();
+    
+    // Set up event listeners
+    setupEventListeners();
+});
+
+// ===== VIEW MANAGEMENT =====
+function loadView(view) {
+    // Hide all views
+    Object.values(DOM.views).forEach(view => {
+        view.classList.remove("active");
+    });
+    
+    // Show requested view
+    DOM.views[view].classList.add("active");
+    STATE.currentView = view;
+    
+    // Special view handling
+    if (view === "watch" && STATE.currentAnime) {
+        loadEpisodes();
+    } else if (view === "account") {
+        updateAccountInfo();
+    } else if (view === "settings") {
+        updateSettingsDisplay();
+    }
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+// ===== CONTENT LOADING =====
+function loadTrending() {
+    DOM.content.trending.innerHTML = CONFIG.animeData.map(anime => 
+        createAnimeCard(anime)
+    ).join("");
+}
+
+function loadBrowse() {
+    DOM.content.browse.innerHTML = CONFIG.animeData.map(anime => 
+        createAnimeCard(anime)
+    ).join("");
+}
+
+function loadEpisodes() {
+    if (!STATE.currentAnime) return;
+    
+    DOM.content.episodes.innerHTML = STATE.currentAnime.episodes.map(ep => `
+        <button class="episode-btn" onclick="playEpisode('${ep.video}')">
+            ${ep.title[STATE.settings.language]}
+        </button>
+    `).join("");
+}
+
+function createAnimeCard(anime) {
+    return `
+        <div class="anime-card" onclick="openAnime(${anime.id})">
+            <img src="${anime.image}" alt="${anime.title[STATE.settings.language]}" loading="lazy">
+            <div class="card-info">
+                <h3>${anime.title[STATE.settings.language]}</h3>
+                <p>${anime.description[STATE.settings.language]}</p>
+            </div>
+        </div>
+    `;
+}
+
+// ===== ANIME PLAYER =====
+function openAnime(animeId) {
+    STATE.currentAnime = CONFIG.animeData.find(anime => anime.id === animeId);
+    if (STATE.currentAnime) {
+        loadView("watch");
+        playEpisode(STATE.currentAnime.episodes[0].video);
+        
+        // Add to watch history
+        if (!STATE.user.watchHistory.includes(animeId)) {
+            STATE.user.watchHistory.push(animeId);
+            updateAccountInfo();
+        }
+    }
+}
+
+function playEpisode(videoId) {
+    DOM.content.videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+}
+
+// ===== SEARCH FUNCTIONALITY =====
+function searchAnime() {
+    const query = document.getElementById("search-input").value.toLowerCase();
+    const results = CONFIG.animeData.filter(anime => 
+        anime.title.en.toLowerCase().includes(query) || 
+        anime.title.ar.includes(query)
+    );
+    
+    DOM.content.browse.innerHTML = results.length ? 
+        results.map(anime => createAnimeCard(anime)).join("") :
+        `<p class="no-results">No anime found</p>`;
+}
+
+// ===== ACCOUNT MANAGEMENT =====
+function updateAccountInfo() {
+    DOM.account.username.textContent = STATE.user.username;
+    DOM.account.watchCount.textContent = STATE.user.watchHistory.length;
+    DOM.account.favoriteCount.textContent = STATE.user.favorites.length;
+}
+
+function showLoginModal() {
+    DOM.modals.login.style.display = "flex";
+}
+
+function hideLoginModal() {
+    DOM.modals.login.style.display = "none";
+}
+
+function showSignupModal() {
+    hideLoginModal();
+    DOM.modals.signup.style.display = "flex";
+}
+
+function hideSignupModal() {
+    DOM.modals.signup.style.display = "none";
+}
+
+// ===== SETTINGS MANAGEMENT =====
+function loadSettings() {
+    // Apply dark mode
+    if (STATE.settings.darkMode) {
+        document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+        document.documentElement.removeAttribute("data-theme");
+    }
+    
+    // Apply language
+    document.documentElement.lang = STATE.settings.language;
+    if (STATE.settings.language === "ar") {
+        document.documentElement.dir = "rtl";
+    } else {
+        document.documentElement.dir = "ltr";
+    }
+    
+    // Update settings UI
+    DOM.settings.darkModeToggle.checked = STATE.settings.darkMode;
+    DOM.settings.languageSelector.value = STATE.settings.language;
+    DOM.settings.qualitySelector.value = STATE.settings.videoQuality;
+}
+
+function updateSettingsDisplay() {
+    DOM.settings.darkModeToggle.checked = STATE.settings.darkMode;
+    DOM.settings.languageSelector.value = STATE.settings.language;
+    DOM.settings.qualitySelector.value = STATE.settings.videoQuality;
+}
+
+function saveSettings() {
+    // Get current settings from UI
+    STATE.settings = {
+        darkMode: DOM.settings.darkModeToggle.checked,
+        language: DOM.settings.languageSelector.value,
+        videoQuality: DOM.settings.qualitySelector.value
+    };
+    
+    // Save to localStorage
+    localStorage.setItem("darkMode", STATE.settings.darkMode);
+    localStorage.setItem("language", STATE.settings.language);
+    localStorage.setItem("videoQuality", STATE.settings.videoQuality);
+    
+    // Apply settings
+    loadSettings();
+    loadTranslations();
+    
+    // Show success message
+    alert("Settings saved successfully!");
+}
+
+function toggleDarkMode() {
+    STATE.settings.darkMode = !STATE.settings.darkMode;
+    localStorage.setItem("darkMode", STATE.settings.darkMode);
+    loadSettings();
+}
+
+// ===== LANGUAGE & TRANSLATIONS =====
+function loadTranslations() {
+    const lang = STATE.settings.language;
+    const translations = CONFIG.translations[lang];
+    
+    // Translate all elements with data-i18n attribute
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[key]) {
+            el.textContent = translations[key];
+        }
+    });
+    
+    // Translate placeholders
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (translations[key]) {
+            el.placeholder = translations[key];
+        }
+    });
+}
+
+// ===== EVENT LISTENERS =====
+function setupEventListeners() {
+    // Navigation buttons
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const view = btn.getAttribute("data-view");
+            if (view) loadView(view);
+        });
+    });
+    
+    // Settings button
+    document.getElementById("settings-btn").addEventListener("click", () => {
+        loadView("settings");
+    });
+    
+    // Login form
+    document.getElementById("login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("login-username").value;
+        const password = document.getElementById("login-password").value;
+        
+        // Simple demo login
+        if (username && password) {
+            STATE.user = {
+                loggedIn: true,
+                username: username,
+                watchHistory: [...STATE.user.watchHistory],
+                favorites: [...STATE.user.favorites]
+            };
+            
+            updateAccountInfo();
+            hideLoginModal();
+            alert("Login successful!");
+        } else {
+            alert("Please enter username and password");
+        }
+    });
+    
+    // Signup form
+    document.getElementById("signup-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("signup-username").value;
+        const email = document.getElementById("signup-email").value;
+        const password = document.getElementById("signup-password").value;
+        const confirm = document.getElementById("signup-confirm").value;
+        
+        // Simple validation
+        if (password !== confirm) {
+            alert("Passwords don't match!");
+            return;
+        }
+        
+        if (username && email && password) {
+            STATE.user = {
+                loggedIn: true,
+                username: username,
+                watchHistory: [...STATE.user.watchHistory],
+                favorites: [...STATE.user.favorites]
+            };
+            
+            updateAccountInfo();
+            hideSignupModal();
+            alert("Account created successfully!");
+        } else {
+            alert("Please fill all fields");
+        }
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener("click", (e) => {
+        if (e.target === DOM.modals.login) {
+            hideLoginModal();
+        }
+        if (e.target === DOM.modals.signup) {
+            hideSignupModal();
+        }
+    });
+}
+    </script>
+</body>
+</html>

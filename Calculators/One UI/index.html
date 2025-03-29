@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One UI 7 Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <div class="previous-operand" id="previous-operand"></div>
+            <div class="current-operand" id="current-operand">0</div>
+        </div>
+        <div class="buttons">
+            <button class="function" data-action="clear">AC</button>
+            <button class="function" data-action="sign">+/-</button>
+            <button class="function" data-action="percent">%</button>
+            <button class="operator" data-action="divide">÷</button>
+            
+            <button class="number" data-number="7">7</button>
+            <button class="number" data-number="8">8</button>
+            <button class="number" data-number="9">9</button>
+            <button class="operator" data-action="multiply">×</button>
+            
+            <button class="number" data-number="4">4</button>
+            <button class="number" data-number="5">5</button>
+            <button class="number" data-number="6">6</button>
+            <button class="operator" data-action="subtract">-</button>
+            
+            <button class="number" data-number="1">1</button>
+            <button class="number" data-number="2">2</button>
+            <button class="number" data-number="3">3</button>
+            <button class="operator" data-action="add">+</button>
+            
+            <button class="number zero" data-number="0">0</button>
+            <button class="number" data-action="decimal">.</button>
+            <button class="equals" data-action="equals">=</button>
+        </div>
+<div class="signature">By Mohamed Ali</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
