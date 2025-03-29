@@ -18,12 +18,11 @@ Welcome to my collection of **creative JavaScript projects**! Each one is design
 ⚡ **Why it's cool**: Smooth UI, win-detection logic, and responsive design.  
 🔧 **Tech**: HTML, CSS, JavaScript (Event Listeners)  
 
-### 3. [**Calculators/One UI**](/Calculators/One%20UI)  
+### 3. [**Calculators**](/Calculators/)  
 📌 *Sleek calculator with dark/light mode*  
-⚡ **Why it's cool**: Clean glassmorphism design + keyboard support.  
+⚡ **Why it's cool**: Clean glassmorphism design + 
+you will find any type of calculators you want!
 🔧 **Tech**: HTML, CSS, JS (DOM Manipulation)  
-
-*(Add more projects with the same format!)*  
 
 ---
 
