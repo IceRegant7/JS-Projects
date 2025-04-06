@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Tasks Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="app-title">
+                <i class="fas fa-check-circle"></i>
+                <h1>Nova Tasks Pro</h1>
+            </div>
+            <button class="btn-icon" id="help-btn" title="Help">
+                <i class="fas fa-question"></i>
+            </button>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="section-header">
+                        <span class="section-title">Categories</span>
+                        <button class="btn-icon" id="add-category-btn" title="Add Category">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <ul class="category-list" id="category-list">
+                        <!-- Categories will be added here dynamically -->
+                    </ul>
+                    <div class="add-category-form" id="add-category-form" style="display: none;">
+                        <input type="text" class="add-category-input" id="new-category-input" placeholder="Category name">
+                        <button class="add-category-btn" id="save-category-btn">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="section-header">
+                        <span class="section-title">Filters</span>
+                    </div>
+                    <div class="filter-options">
+                        <div class="filter-option all active" data-filter="all">
+                            <div class="filter-indicator" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);"></div>
+                            <span>All Tasks</span>
+                        </div>
+                        <div class="filter-option today" data-filter="today">
+                            <div class="filter-indicator" style="background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);"></div>
+                            <span>Today</span>
+                        </div>
+                        <div class="filter-option completed" data-filter="completed">
+                            <div class="filter-indicator" style="background: linear-gradient(135deg, #10b981 0%, #34d399 100%);"></div>
+                            <span>Completed</span>
+                        </div>
+                        <div class="filter-option important" data-filter="important">
+                            <div class="filter-indicator" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);"></div>
+                            <span>Important</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <div class="tasks-header">
+                    <div class="tasks-title">
+                        <span id="current-category">All Tasks</span>
+                        <span class="tasks-count" id="tasks-count">0</span>
+                    </div>
+                    <button class="btn-icon" id="sort-btn" title="Sort">
+                        <i class="fas fa-sort-amount-down"></i>
+                    </button>
+                </div>
+
+                <!-- Add Task Form -->
+                <form class="add-task-form" id="add-task-form">
+                    <input type="text" class="add-task-input" id="new-task-input" placeholder="Add a new task..." autocomplete="off">
+                    <button type="submit" class="add-task-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </form>
+
+                <!-- Task List -->
+                <ul class="task-list" id="task-list">
+                    <!-- Tasks will be added here dynamically -->
+                    <div class="empty-state" id="empty-state">
+                        <i class="fas fa-tasks empty-icon"></i>
+                        <h3 class="empty-title">No tasks found</h3>
+                        <p class="empty-text">Add a task to get started or try changing your filters</p>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Detail Modal -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Task Details</h3>
+                <button class="modal-close-btn" id="close-modal-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="task-title-input" class="form-label">Title</label>
+                    <input type="text" id="task-title-input" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label for="task-description-input" class="form-label">Description</label>
+                    <textarea id="task-description-input" class="form-input form-textarea"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-category-select" class="form-label">Category</label>
+                    <select id="task-category-select" class="form-select">
+                        <!-- Categories will be added here dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-due-date-input" class="form-label">Due Date</label>
+                    <input type="date" id="task-due-date-input" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-checkbox">
+                        <input type="checkbox" id="task-important-checkbox">
+                        <span>Mark as important</span>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="delete-task-btn">Delete</button>
+                <button class="btn btn-secondary" id="cancel-task-btn">Cancel</button>
+                <button class="btn btn-primary" id="save-task-btn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+    <script src="script.js"></script>
+</body>
+</html>

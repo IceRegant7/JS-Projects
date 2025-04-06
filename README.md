@@ -10,7 +10,7 @@ A collection of vanilla JavaScript projects.
 - [Hacking Screen](/Hacking%20Screen)  
 - [Calculators](/Calculators)  
 - [Snake Game](/Snake%20Game)  
-
+- [To-Do APP](/To-Do%APP)  
 ---
 
 `JavaScript` `HTML5` `CSS3`
