@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mo Snake</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;700&display=swap">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="game-container">
+        <div class="header">
+            <div class="title-container">
+                <h1>
+                <div class="difficulty-selector">
+                    <button class="difficulty-btn active" data-difficulty="easy">EASY</button>
+                    <button class="difficulty-btn" data-difficulty="medium">MEDIUM</button>
+                    <button class="difficulty-btn" data-difficulty="hard">HARD</button>
+                </div>
+            </div>
+            <div class="score-container">
+                <div class="score-display">
+                    <span class="score-icon">★</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="game-controls">
+                    <button id="soundBtn" aria-label="Toggle sound">🔊</button>
+                    <button id="pauseBtn" aria-label="Pause game">||</button>
+                </div>
+            </div>
+        </div>
+        <h6>by Mohamed Ali</h6>
+        <div class="game-board">
+            <canvas id="gameCanvas"></canvas>
+            <div class="game-over" id="gameOver">
+                <h2>GAME OVER</h2>
+                <div class="final-score">SCORE: <span id="finalScore">0</span></div>
+                <div class="high-score">HIGH SCORE: <span id="highScore">0</span></div>
+                <button id="restartBtn">PLAY AGAIN</button>
+            </div>
+            <div class="pause-screen" id="pauseScreen">
+                <h2>PAUSED</h2>
+                <button id="resumeBtn">RESUME</button>
+            </div>
+            <div class="start-screen" id="startScreen">
+                <h2>Mo Snake</h2>
+                <p>Swipe or use arrow keys to move</p>
+                <button id="startBtn">START GAME</button>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="touch-controls">
+                <button class="control-btn" id="up">↑</button>
+                <button class="control-btn" id="left">←</button>
+                <button class="control-btn" id="right">→</button>
+                <button class="control-btn" id="down">↓</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="eatSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+    <audio id="crashSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-explosion-2759.mp3" preload="auto"></audio>
+    <audio id="backgroundMusic" loop src="https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-668.mp3" preload="auto"></audio>
+
+    <script src="game.js" type="module"></script>
+</body>
+</html>
