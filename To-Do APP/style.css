@@ -949,3 +949,9 @@
         body.dark-mode .empty-state {
             color: #94a3b8;
         }
+        
+        
+small {
+  margin-left: 20px;
+  font-size: 13px;
+}
