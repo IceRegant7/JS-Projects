@@ -1,0 +1,86 @@
+body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .translator {
+            width: 100%;
+            max-width: 600px;
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #4dabf7;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        select {
+            flex: 1;
+            padding: 10px;
+            background: #2d2d2d;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        .swap-btn {
+            background: #333;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            width: 40px;
+            cursor: pointer;
+        }
+        .text-areas {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            background: #2d2d2d;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 5px;
+            resize: none;
+        }
+        .rtl {
+            direction: rtl;
+            text-align: right;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .translate-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4dabf7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .translate-btn:disabled {
+            background: #333;
+            cursor: not-allowed;
+        }
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }

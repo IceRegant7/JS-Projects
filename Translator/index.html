@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic-English Translator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="translator">
+        <h1>Arabic-English Translator</h1>
+        
+        <div class="language-selector">
+            <select id="sourceLanguage">
+                <option value="en">English</option>
+                <option value="ar">Arabic</option>
+            </select>
+            
+            <button class="swap-btn" id="swapBtn">⇄</button>
+            
+            <select id="targetLanguage">
+                <option value="ar">Arabic</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+        
+        <div class="text-areas">
+            <textarea id="sourceText" placeholder="Type here..."></textarea>
+            <textarea id="targetText" placeholder="Translation" readonly></textarea>
+        </div>
+        
+        <button class="translate-btn" id="translateBtn">Translate</button>
+        <div class="error" id="errorMsg"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
