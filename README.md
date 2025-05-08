@@ -11,6 +11,7 @@ A collection of vanilla JavaScript projects.
 - [Calculators](/Calculators)  
 - [Snake Game](/Snake%20Game)  
 - [To-Do APP](/To-Do%APP)  
+- [Translator](/Translator)
 ---
 
 `JavaScript` `HTML5` `CSS3`
